@@ -9,19 +9,19 @@ var _this; // scoping shizzel
 
 // config vars
 // TODO: clean up
-var target_file_still = "/home/pi/nodejs/gifittome/public/images/cam.jpg";
-var target_file_gif = '/home/pi/nodejs/gifittome/public/videos/video.gif';
+var target_file_still = "/home/pi/nodejs/gifittome_terminal/public/images/cam.jpg";
+var target_file_gif = '/home/pi/nodejs/gifittome_terminal/public/videos/video.gif';
 var target_folder_gif_external_path = '/images/gif/';
-var target_folder_gif_path = "/home/pi/nodejs/gifittome/public/images/gif/";
-var target_file_watermark = "/home/pi/nodejs/gifittome/public/images/watermark.png";
-var target_file_palette = "/home/pi/nodejs/gifittome/public/videos/palette.png";
-var target_file_mp4 = "/home/pi/nodejs/gifittome/public/videos/video.mp4";
-var target_file_h264 = "/home/pi/nodejs/gifittome/public/videos/video.h264";
-var target_file_qr = "/home/pi/nodejs/gifittome/public/images/qr.png";
+var target_folder_gif_path = "/home/pi/nodejs/gifittome_terminal/public/images/gif/";
+var target_file_watermark = "/home/pi/nodejs/gifittome_terminal/public/images/watermark.png";
+var target_file_palette = "/home/pi/nodejs/gifittome_terminal/public/videos/palette.png";
+var target_file_mp4 = "/home/pi/nodejs/gifittome_terminal/public/videos/video.mp4";
+var target_file_h264 = "/home/pi/nodejs/gifittome_terminal/public/videos/video.h264";
+var target_file_qr = "/home/pi/nodejs/gifittome_terminal/public/images/qr.png";
 
 // shell string for shell.js
 var shell_string_stillimage = "raspistill -o " + target_file_still + " -w 600 -h 400 -t 500";
-var shell_string_delete = "rm -r -f /home/pi/nodejs/gifittome/public/videos/*";
+var shell_string_delete = "rm -r -f /home/pi/nodejs/gifittome_terminal/public/videos/*";
 var shell_string_create_video = "raspivid -o " + target_file_h264 + " -fps 25 -w 600 -h 400 -t 5000";
 var shell_string_create_watermark = "ffmpeg -i " + target_file_h264 + " -i " + target_file_watermark + " -filter_complex 'overlay=0:0' " + target_file_mp4;
 var shell_string_ffmpeg_palette = "ffmpeg -i " + target_file_h264 + " -vf 'fps=5,scale=600:-1:flags=lanczos,palettegen' -y " + target_file_palette;
