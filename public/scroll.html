@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>gif it to me</title>
+	<meta name="Resource-type" content="Document" />
+	<link rel="stylesheet" type="text/css" href="stylesheets/jquery.fullPage.css" />
+	<link rel="stylesheet" type="text/css" href="stylesheets/examples.css" />
+	<style>
+
+	/* Style for our header texts
+	* --------------------------------------- */
+	h1{
+		font-size: 5em;
+		font-family: arial,helvetica;
+		color: #fff;
+		margin:0;
+		padding:0;
+	}
+
+	/* Centered texts in each section
+	* --------------------------------------- */
+	.section{
+		text-align:center;
+	}
+
+
+	/* Backgrounds will cover all the section
+	* --------------------------------------- */
+	#section0,
+	#section1,
+	#section2,
+	#section3{
+		background-size: cover;
+		background-attachment: fixed;
+	}
+
+	/* Defining each sectino background and styles
+	* --------------------------------------- */
+	#section0{
+		background-image: url(images/scroll/bg1.jpg);
+		padding: 6% 0 0 0;
+	}
+
+	#section1{
+		background-image: url(images/scroll/bg2.jpg);
+		padding: 6% 0 0 0;
+	}
+
+	#section2{
+		background-image: url(images/scroll/bg3.jpg);
+		padding: 6% 0 0 0;
+	}
+	#section3{
+		background-image: url(images/scroll/bg4.jpg);
+		padding: 6% 0 0 0;
+	}
+
+	</style>
+
+	<!--[if IE]>
+		<script type="text/javascript">
+			 var console = { log: function() {} };
+		</script>
+	<![endif]-->
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+
+	<script type="text/javascript" src="javascripts/jquery.fullPage.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#fullpage').fullpage({
+				verticalCentered: false,
+				css3:false
+			});
+
+			createImage();
+		});
+	</script>
+
+</head>
+<body>
+
+<div id="fullpage">
+	<div class="section " id="section0">
+		<h1>welcome</h1>
+		<div id="image" class="inhalt">
+      <img src="images/camera.jpg" id="preview">
+    </div>
+		<a href="#" class="redbtn" onclick="createImage()">Bild aktualisieren</a>
+	</div>
+
+	<div class="section" id="section2">
+		<h1>GIF</h1>
+		<div id="gif" class="gif">
+			<img src="images/animated.gif" id="previewgif">
+		</div>
+		<a href="#" class="redbtn" onclick="createVideo()">Create GIF</a>
+	</div>
+	<div class="section" id="section3">
+		<h1>take away</h1>
+		<div id="qr">
+      <img src="images/transp.gif" id="transp">
+    </div>
+		<a href="#" class="redbtn" onclick="tweetGIF()">Tweet GIF</a>
+	</div>
+</div>
+
+<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+<script>
+	var socket = io();
+
+	hideLoader();
+
+	// image stuff
+	socket.on('image created', function(msg){
+		//alert("image created");
+		hideLoader();
+
+		var random = Math.random() * 1000000;
+		var img = "images/cam.jpg?rand=" + random;
+		$("#preview").attr("src", img).load(function(){
+			//alert("reloaded");
+		});
+	});
+
+	// Video stuff
+	socket.on('video created', function(msg){
+		hideLoader();
+
+		var random = Math.random() * 1000000;
+		var vid = "videos/video.mp4?rand=" + random;
+		//alert("video created" + vid);
+		$("#vid").attr("src", vid);
+	});
+
+	// GIF stuff
+	socket.on('gif created', function(msg){
+		hideLoader();
+
+		var random = Math.random() * 1000000;
+		var randomStr = "?rand=" + random;
+		//var gifsrc = "/videos/video.gif?rand=" + random;
+		var gifsrc = msg + randomStr;
+		//alert("gif created" + gifsrc);
+
+		$("#previewgif").attr("src", gifsrc);
+	});
+
+	socket.on('palette created', function(msg){
+		updateLoaderText("palette created, generating GIF now");
+	});
+
+	// GIF stuff
+	socket.on('gif tweeted', function(msg){
+		hideLoader();
+	});
+
+	// GIF stuff
+	socket.on('qr created', function(msg){
+		//$('#qr').prepend('<img id="qrcode" src="images/qr.png" />');
+		var random = Math.random() * 1000000;
+		var randomStr = "?rand=" + random;
+		//var gifsrc = "/videos/video.gif?rand=" + random;
+		var transpgifsrc = "images/qr.png" + randomStr;
+
+		$("#transp").attr("src", transpgifsrc);
+	});
+
+
+
+
+	// socket calls to node.js server
+	function createImage () {
+		showLoader("Generating new still image");
+		socket.emit('update image');
+	}
+
+	function createVideo () {
+		showLoader("Generating new video");
+		socket.emit('create video');
+		//alert("create video");
+	}
+
+	function tweetGIF () {
+		showLoader("tweeting generated GIF");
+		socket.emit('tweet gif');
+	}
+
+
+	// loader show/hide
+	function showLoader (msg) {
+		$("#statustext").text(msg);
+		$("#loader").show();
+	}
+	function hideLoader () {
+		$("#loader").hide();
+	}
+
+	// update loader text
+	function updateLoaderText (msg) {
+			$("#statustext").text(msg);
+	}
+
+
+</script>
+</body>
+</html>
