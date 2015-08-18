@@ -195,8 +195,6 @@ function fetchGIFs () {
 // wait for CTRL+C
 process.on('SIGINT', shutdownAll);
 
-// wait for forever process stop
-process.on('SIGKILL', shutdownAll);
 
 function shutdownAll () {
   console.log("shutdownAll");
