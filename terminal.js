@@ -4,6 +4,7 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var path = require('path');
 var walk = require('walk');
+var Twit = require('twit');
 
 var GpioHelper = require("./gpiohelper.js");
 var FfmpegHelper = require("./ffmpeghelper.js");
