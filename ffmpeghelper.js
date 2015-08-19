@@ -20,7 +20,7 @@ var target_file_h264 = "/home/pi/nodejs/gifittome_terminal/public/videos/video.h
 var target_file_qr = "/home/pi/nodejs/gifittome_terminal/public/images/qr.png";
 
 // shell string for shell.js
-var shell_string_stillimage = "raspistill -o " + target_file_still + " -w 400 -h 267 -t 500";
+var shell_string_stillimage = "raspistill -o " + target_file_still + " -w 400 -h 267 -t 200";
 var shell_string_delete = "rm -r -f /home/pi/nodejs/gifittome_terminal/public/videos/*";
 var shell_string_create_video = "raspivid -o " + target_file_h264 + " -fps 25 -w 400 -h 267 -t 5000";
 var shell_string_create_watermark = "ffmpeg -i " + target_file_h264 + " -i " + target_file_watermark + " -filter_complex 'overlay=0:0' " + target_file_mp4;
