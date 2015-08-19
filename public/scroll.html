@@ -21,12 +21,18 @@
 
 	p{
 		color: #fff;
+		font-size: 1em;
 	}
 
 	/* Centered texts in each section
 	* --------------------------------------- */
 	.section{
 		text-align:center;
+	}
+
+	#loaderbar {
+		margin-top: 100px;
+		margin-bottom: 10px;
 	}
 
 
@@ -71,8 +77,6 @@
 	<![endif]-->
 
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
-
 	<script type="text/javascript" src="javascripts/jquery.fullPage.js"></script>
 
 	<script type="text/javascript">
@@ -82,6 +86,7 @@
 				css3:false
 			});
 
+			// initially update still image to give the user feedback about the viewport of the camera
 			createImage();
 		});
 	</script>
@@ -129,21 +134,31 @@
 
 	var socket = io();
 
-	// if image is created, paste it into the code
+	// if image is created on the server, the server emits an "image created" event
+	// the name of the image is always "cam.jpg" because it's overwritten
+	// the jquery adds the image with a cache buster into the markup
 	socket.on('image created', function(msg){
 		var random = Math.random() * 1000000;
 		var img = "images/cam.jpg?rand=" + random;
 		$("#preview").attr("src", img).load(function(){
-			//alert("reloaded");
+			// console.log("image has been written");
 		});
 	});
 
-	// if Video was created, update loader text
+	// if a new video was created, the server emits an "video created" event and
+	// goes on with the procedure:
+				// 1) Video creation with raspivid shell call
+				// 2) watermarking h264 file to MP4 with ffmpeg
+				// 3) creating a palette.png for a more accurate colorspace
+				// 4) creating a GIF from MP4 with the help of the palette.png
+
+	// update loader text in viewport 3
 	socket.on('video created', function(msg){
 		updateLoaderText("video has been created, generating palette now");
 	});
 
-	// GIF stuff
+	// if the GIF is finished, the server emits a "gif created" event
+	// and passes the filename as the msg parameter
 	socket.on('gif created', function(msg){
 
 		var random = Math.random() * 1000000;
@@ -169,7 +184,7 @@
 	});
 
 	// If QR is created, paste it into the HTML
-	socket.on('qr created', function(msg){
+	socket.on('qr created', function(){
 		var random = Math.random() * 1000000;
 		var randomStr = "?rand=" + random;
 		var transpgifsrc = "images/qr.png" + randomStr;

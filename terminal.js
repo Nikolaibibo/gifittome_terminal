@@ -74,31 +74,39 @@ ffmpeg_helper.on("watermark-created", function (resultobject) {
 
 ffmpeg_helper.on("gif-created", function (tmpgifsrc) {
   console.log("gif-created :: " + tmpgifsrc);
+
+  // storing the filename in a local var
   gifpath = tmpgifsrc;
+
+  // emit the event with the filename for frontend
   io.emit('gif created', tmpgifsrc);
 });
 
 ffmpeg_helper.on("palette-created", function (tmpgifsrc) {
   console.log("palette-created :: " + tmpgifsrc);
-  io.emit('palette created', tmpgifsrc);
+
+  // event just for showing a status in the frontend loader
+  io.emit('palette created');
 });
 
 ffmpeg_helper.on("qr-created", function (resultobject) {
 
   console.log("qr-created");
+
+  // reset the status var
   captureIsBusy = false;
 
   gpio_helper.stopBlinkingRed();
   gpio_helper.startGreen();
 
-  io.emit('qr created', "leer");
+  io.emit('qr created');
 });
 
-ffmpeg_helper.on("stillimage-created", function (tmpgifsrc) {
+ffmpeg_helper.on("stillimage-created", function () {
   io.emit('image created');
 });
 
-ffmpeg_helper.on("video-created", function (tmpgifsrc) {
+ffmpeg_helper.on("video-created", function () {
   io.emit('video created');
 });
 
@@ -125,14 +133,6 @@ app.get('/gifs', function(req, res, next){
   next();
 }, function (req, res) {
   res.sendFile(path.join(__dirname, './public', 'gifs.html'));
-});
-
-// fetch of gifs is triggered via socket.io
-app.get('/demo', function(req, res, next){
-  console.log("scroll page");
-  next();
-}, function (req, res) {
-  res.sendFile(path.join(__dirname, './public', 'demo.html'));
 });
 
 // listen on port
@@ -168,9 +168,10 @@ function captureVideo () {
   }else{
 
     captureIsBusy = true;
+
     gpio_helper.doCountdownAnimation();
 
-
+    // delay because of LED animation
     setTimeout(function(){
       gpio_helper.stopGreen();
       gpio_helper.startBlinkingRed();
