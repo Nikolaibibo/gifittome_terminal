@@ -30,10 +30,10 @@ var gifpath = "";
 // #######################
 var gpio_helper = new GpioHelper();
 gpio_helper.on("button-released", function (resultobject) {
-  console.log("button-released");
+  //console.log("button-released");
 });
 gpio_helper.on("button-down", function (resultobject) {
-  console.log("button-down");
+  //console.log("button-down");
   if (captureIsBusy) {
     console.log("capture process running! try again later...");
   }else{
@@ -58,7 +58,7 @@ gpio_helper.on("button-down", function (resultobject) {
 // #######################
 var ffmpeg_helper = new FfmpegHelper();
 ffmpeg_helper.on("video-created", function (resultobject) {
-  console.log("video-created");
+  //console.log("video-created");
   gpio_helper.stopBlinkingYellow();
   // create gif
   //ffmpeg_helper.createGIF();
@@ -66,14 +66,14 @@ ffmpeg_helper.on("video-created", function (resultobject) {
 });
 
 ffmpeg_helper.on("watermark-created", function (resultobject) {
-  console.log("watermark-created");
+  //console.log("watermark-created");
   gpio_helper.stopBlinkingYellow();
   // create gif
   ffmpeg_helper.createGIF();
 });
 
 ffmpeg_helper.on("gif-created", function (tmpgifsrc) {
-  console.log("gif-created :: " + tmpgifsrc);
+  //console.log("gif-created :: " + tmpgifsrc);
 
   // storing the filename in a local var
   gifpath = tmpgifsrc;
@@ -83,7 +83,7 @@ ffmpeg_helper.on("gif-created", function (tmpgifsrc) {
 });
 
 ffmpeg_helper.on("palette-created", function (tmpgifsrc) {
-  console.log("palette-created :: " + tmpgifsrc);
+  //console.log("palette-created :: " + tmpgifsrc);
 
   // event just for showing a status in the frontend loader
   io.emit('palette created');
@@ -91,7 +91,7 @@ ffmpeg_helper.on("palette-created", function (tmpgifsrc) {
 
 ffmpeg_helper.on("qr-created", function (resultobject) {
 
-  console.log("qr-created");
+  //console.log("qr-created");
 
   // reset the status var
   captureIsBusy = false;
@@ -120,7 +120,7 @@ app.use(express.static('public'));
 
 // express.js ROUTING -> root
 app.get('/', function(req, res, next){
-  console.log("root page");
+  //console.log("root page");
   next();
 }, function (req, res) {
   res.sendFile(path.join(__dirname, './public', 'scroll.html'));
@@ -145,10 +145,10 @@ http.listen(3000, function(){
 // socket.io
 // ###########################
 io.on('connection', function(socket){
-  console.log('a user connected');
+  //console.log('a user connected');
   // disconnect
   socket.on('disconnect', function(){
-    console.log('user disconnected');
+    //console.log('user disconnected');
   });
   // fetch GIFs if browser loads the page and emits msg
   socket.on('fetch gifs', fetchGIFs);
@@ -184,7 +184,7 @@ function captureVideo () {
 }
 
 function tweetGIF () {
-  console.log("tweetGIF");
+  //console.log("tweetGIF");
 
   // Load your image
   //var data = require('fs').readFileSync('./public/videos/video.gif');
@@ -198,7 +198,7 @@ function tweetGIF () {
     var params = { status: '#GIF_it_to_me', media_ids: [mediaIdStr] }
 
     T.post('statuses/update', params, function (err, data, response) {
-      console.log("tweeted image succesful");
+      console.log("tweeted image succesful via @fork_tessel");
       io.emit('gif tweeted');
     })
   })
@@ -235,7 +235,7 @@ process.on('SIGINT', shutdownAll);
 
 
 function shutdownAll () {
-  console.log("shutdownAll");
+  console.log("shutting down");
 
   gpio_helper.stopBlinkingRed();
   gpio_helper.stopBlinkingYellow();

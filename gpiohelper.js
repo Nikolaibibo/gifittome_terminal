@@ -13,7 +13,7 @@ var gpio20_button = gpio.export(20, {
    direction: "in",
    //interval: 200,
    ready: function() {
-     console.log("Button ready");
+     //console.log("Button ready");
    }
 });
 
@@ -36,7 +36,7 @@ var gpio16_red = gpio.export(16, {
    direction: 'out',
    interval: 200,
    ready: function() {
-     console.log("red LED ready");
+     //console.log("red LED ready");
    }
 });
 
@@ -45,7 +45,7 @@ var gpio26_yellow = gpio.export(26, {
    direction: 'out',
    interval: 200,
    ready: function() {
-     console.log("yellow LED ready");
+     //console.log("yellow LED ready");
    }
 });
 
@@ -54,7 +54,7 @@ var gpio12_green = gpio.export(12, {
    direction: 'out',
    interval: 200,
    ready: function() {
-     console.log("green LED ready");
+     //console.log("green LED ready");
      //gpio12_green.set();
    }
 });

@@ -35,7 +35,7 @@ util.inherits(FfmpegHelper, EventEmitter);
 
 FfmpegHelper.prototype.captureStillImage = function () {
   shell.exec(shell_string_stillimage, function(code, output) {
-    console.log("still image created!");
+    //console.log("still image created!");
     _this.emit("stillimage-created", "testdata");
     //io.emit('image created');
   });
@@ -46,9 +46,9 @@ FfmpegHelper.prototype.captureVideo = function () {
   console.log("FfmpegHelper captureVideo");
 
   shell.exec(shell_string_delete, function(code, output) {
-    console.log("videos deleted");
+    //console.log("videos deleted");
     shell.exec(shell_string_create_video, function(code, output) {
-      console.log("video created");
+      //console.log("video created");
       _this.emit("video-created", "testdata");
     });
   });
@@ -57,7 +57,7 @@ FfmpegHelper.prototype.captureVideo = function () {
 FfmpegHelper.prototype.createWatermark = function () {
 
   shell.exec(shell_string_create_watermark, function(code, output) {
-    console.log("watermark created");
+    //console.log("watermark created");
     _this.emit("watermark-created", "watermark");
   });
 }
@@ -67,7 +67,7 @@ FfmpegHelper.prototype.createGIF = function () {
 
   shell.exec(shell_string_ffmpeg_palette, function(code, output) {
 
-    console.log("palette created!");
+    //console.log("palette created!");
     _this.emit("palette-created", "leer");
 
     // generate unique file name
@@ -76,10 +76,10 @@ FfmpegHelper.prototype.createGIF = function () {
     target_file_gif = datestring;
 
     var shell_string_ffmpeg_gif = "ffmpeg -i " + target_file_mp4 + " -i " + target_file_palette + " -lavfi 'fps=15,scale=400:-1:flags=lanczos [x]; [x][1:v] paletteuse' -y " + target_folder_gif_path + target_file_gif;
-    console.log("shell_string_ffmpeg_gif::::: " + shell_string_ffmpeg_gif);
+    //console.log("shell_string_ffmpeg_gif::::: " + shell_string_ffmpeg_gif);
 
     shell.exec(shell_string_ffmpeg_gif, function(code, output) {
-      console.log("GIF created");
+      //console.log("GIF created");
 
       // QR code generating
       var target_gif = "http://" + ip.address() + ":3000" + target_folder_gif_external_path + target_file_gif;
