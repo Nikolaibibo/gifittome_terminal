@@ -63,6 +63,11 @@ ffmpeg_helper.on("gif-created", function (tmpgifsrc) {
   io.emit('gif created', tmpgifsrc);
 });
 
+ffmpeg_helper.on("palette-created", function (tmpgifsrc) {
+  console.log("palette-created :: " + tmpgifsrc);
+  io.emit('palette created', tmpgifsrc);
+});
+
 ffmpeg_helper.on("qr-created", function (resultobject) {
 
   console.log("qr-created");

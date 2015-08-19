@@ -106,6 +106,7 @@
 		<h1>processing gif...</h1>
 		<div id="loading">
       <img src="images/loader2.gif" id="loaderbar">
+			<p class="statustext" id="statustext">capturing video</p>
     </div>
 	</div>
 
@@ -121,15 +122,11 @@
 
 <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 <script>
+
 	var socket = io();
 
-	hideLoader();
-
-	// image stuff
+	// if image is created, paste it into the code
 	socket.on('image created', function(msg){
-		//alert("image created");
-		hideLoader();
-
 		var random = Math.random() * 1000000;
 		var img = "images/cam.jpg?rand=" + random;
 		$("#preview").attr("src", img).load(function(){
@@ -137,19 +134,13 @@
 		});
 	});
 
-	// Video stuff
+	// if Video was created, update loader text
 	socket.on('video created', function(msg){
-		hideLoader();
-
-		var random = Math.random() * 1000000;
-		var vid = "videos/video.mp4?rand=" + random;
-		//alert("video created" + vid);
-		$("#vid").attr("src", vid);
+		updateLoaderText("video has been created, generating GIF now");
 	});
 
 	// GIF stuff
 	socket.on('gif created', function(msg){
-		hideLoader();
 
 		var random = Math.random() * 1000000;
 		var randomStr = "?rand=" + random;
@@ -158,57 +149,53 @@
 		//alert("gif created" + gifsrc);
 
 		$("#previewgif").attr("src", gifsrc);
+
+		updateLoaderText("GIF has been created");
 	});
 
+	// if server has created palette
 	socket.on('palette created', function(msg){
 		updateLoaderText("palette created, generating GIF now");
 	});
 
 	// GIF stuff
 	socket.on('gif tweeted', function(msg){
-		hideLoader();
+		console.log("gif has been tweeted");
+		updateLoaderText("GIF has been tweeted");
 	});
 
-	// GIF stuff
+	// If QR is created, paste it into the HTML
 	socket.on('qr created', function(msg){
-		//$('#qr').prepend('<img id="qrcode" src="images/qr.png" />');
 		var random = Math.random() * 1000000;
 		var randomStr = "?rand=" + random;
-		//var gifsrc = "/videos/video.gif?rand=" + random;
 		var transpgifsrc = "images/qr.png" + randomStr;
 
 		$("#transp").attr("src", transpgifsrc);
+
+		updateLoaderText("QR code was created below");
 	});
 
 
 
-
+	// ##### METHODS LOCAL ########
 	// socket calls to node.js server
 	function createImage () {
-		showLoader("Generating new still image");
+		//updateLoaderText("Generating new still image");
 		socket.emit('update image');
 	}
 
 	function createVideo () {
-		showLoader("Generating new video");
+		updateLoaderText("Generating new video");
 		socket.emit('create video');
 		//alert("create video");
+		$.fn.fullpage.moveSectionDown();
 	}
 
 	function tweetGIF () {
-		showLoader("tweeting generated GIF");
+		updateLoaderText("tweeting generated GIF");
 		socket.emit('tweet gif');
 	}
 
-
-	// loader show/hide
-	function showLoader (msg) {
-		$("#statustext").text(msg);
-		$("#loader").show();
-	}
-	function hideLoader () {
-		$("#loader").hide();
-	}
 
 	// update loader text
 	function updateLoaderText (msg) {
