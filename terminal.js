@@ -10,6 +10,7 @@ var FfmpegHelper = require("./ffmpeghelper.js");
 
 var credentials = require('./twitter_credentials.json');
 
+
 // twitter credentials
 var T = new Twit({
   consumer_key: credentials.twitter_consumer_key,
