@@ -8,8 +8,19 @@ var walk = require('walk');
 var GpioHelper = require("./gpiohelper.js");
 var FfmpegHelper = require("./ffmpeghelper.js");
 
+var credentials = require('./twitter_credentials.json');
+
+// twitter credentials
+var T = new Twit({
+  consumer_key: credentials.twitter_consumer_key,
+  consumer_secret: credentials.twitter_consumer_secret,
+  access_token: credentials.twitter_access_token_key,
+  access_token_secret: credentials.twitter_access_token_secret
+});
+
 var giffiles   = [];
 var captureIsBusy = false;
+var gifpath = "";
 
 // #######################
 // GPIO Helper and Events
@@ -60,6 +71,7 @@ ffmpeg_helper.on("watermark-created", function (resultobject) {
 
 ffmpeg_helper.on("gif-created", function (tmpgifsrc) {
   console.log("gif-created :: " + tmpgifsrc);
+  gifpath = tmpgifsrc;
   io.emit('gif created', tmpgifsrc);
 });
 
@@ -168,7 +180,24 @@ function captureVideo () {
 }
 
 function tweetGIF () {
-  console.log("IMPLEMENT THIS PLEASE!!");
+  console.log("tweetGIF");
+
+  // Load your image
+  //var data = require('fs').readFileSync('./public/videos/video.gif');
+  var b64content = fs.readFileSync("./public" + target_file_gif, { encoding: 'base64' })
+
+  // first we must post the media to Twitter
+  T.post('media/upload', { media_data: b64content }, function (err, data, response) {
+
+    // now we can reference the media and post a tweet (media will attach to the tweet)
+    var mediaIdStr = data.media_id_string
+    var params = { status: '#GIF_it_to_me', media_ids: [mediaIdStr] }
+
+    T.post('statuses/update', params, function (err, data, response) {
+      console.log("tweeted image succesful");
+      io.emit('gif tweeted');
+    })
+  })
 }
 
 function fetchGIFs () {
