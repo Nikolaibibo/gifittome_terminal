@@ -1,21 +1,21 @@
 {
   "name": "gifittome",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "creates gif from camera",
-  "main": "app.js",
+  "main": "terminal.js",
   "scripts": {
-    "test": "node app.js"
+    "test": "node terminal.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Nikolaibibo/gifittome.git"
+    "url": "https://github.com/Nikolaibibo/gifittome_terminal.git"
   },
   "author": "Nikolai Bockholt",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Nikolaibibo/gifittome/issues"
   },
-  "homepage": "https://github.com/Nikolaibibo/gifittome",
+  "homepage": "https://github.com/Nikolaibibo/gifittome_terminal",
   "dependencies": {
     "express": "^4.13.1",
     "gpio": "^0.2.7",

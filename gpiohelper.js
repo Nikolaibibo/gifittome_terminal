@@ -34,6 +34,7 @@ gpio20_button.on("change", function(val) {
 // LED red code
 var gpio16_red = gpio.export(16, {
    direction: 'out',
+   // TODO: check if interval is need if GPIO is out
    interval: 200,
    ready: function() {
      //console.log("red LED ready");
