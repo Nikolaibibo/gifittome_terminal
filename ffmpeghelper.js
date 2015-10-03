@@ -46,9 +46,9 @@ FfmpegHelper.prototype.captureVideo = function () {
   console.log("FfmpegHelper captureVideo");
 
   shell.exec(shell_string_delete, function(code, output) {
-    //console.log("videos deleted");
+    console.log("videos deleted");
     shell.exec(shell_string_create_video, function(code, output) {
-      //console.log("video created");
+      console.log("video created");
       _this.emit("video-created", "testdata");
     });
   });
@@ -57,7 +57,7 @@ FfmpegHelper.prototype.captureVideo = function () {
 FfmpegHelper.prototype.createWatermark = function () {
 
   shell.exec(shell_string_create_watermark, function(code, output) {
-    //console.log("watermark created");
+    console.log("watermark created");
     _this.emit("watermark-created", "watermark");
   });
 }
@@ -80,7 +80,7 @@ FfmpegHelper.prototype.createGIF = function () {
     //console.log("shell_string_ffmpeg_gif::::: " + shell_string_ffmpeg_gif);
 
     shell.exec(shell_string_ffmpeg_gif, function(code, output) {
-      //console.log("GIF created");
+      console.log("GIF created");
 
       // QR code generating
       var target_gif = "http://" + ip.address() + ":3000" + target_folder_gif_external_path + target_file_gif;
