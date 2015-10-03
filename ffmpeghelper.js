@@ -67,7 +67,7 @@ FfmpegHelper.prototype.createGIF = function () {
 
   shell.exec(shell_string_ffmpeg_palette, function(code, output) {
 
-    //console.log("palette created!");
+    console.log("palette created!");
     _this.emit("palette-created", "leer");
 
     // generate unique file name
