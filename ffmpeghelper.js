@@ -76,7 +76,7 @@ FfmpegHelper.prototype.createGIF = function () {
     target_file_gif = datestring;
 
     // TODO: in variable packen!
-    var shell_string_ffmpeg_gif = "ffmpeg -i " + target_file_mp4 + " -i " + target_file_palette + " -lavfi 'fps=15,scale=400:-1:flags=lanczos [x]; [x][1:v] paletteuse' -y " + target_folder_gif_path + target_file_gif;
+    var shell_string_ffmpeg_gif = "ffmpeg -i " + target_file_h264 + " -i " + target_file_palette + " -lavfi 'fps=15,scale=400:-1:flags=lanczos [x]; [x][1:v] paletteuse' -y " + target_folder_gif_path + target_file_gif;
     //console.log("shell_string_ffmpeg_gif::::: " + shell_string_ffmpeg_gif);
 
     shell.exec(shell_string_ffmpeg_gif, function(code, output) {
