@@ -24,7 +24,7 @@ var shell_string_stillimage = "raspistill -o " + target_file_still + " -w 400 -h
 var shell_string_delete = "rm -r -f /home/pi/nodejs/gifittome_terminal/public/videos/*";
 var shell_string_create_video = "raspivid -o " + target_file_h264 + " -fps 25 -w 400 -h 267 -t 5000";
 var shell_string_create_watermark = "ffmpeg -i " + target_file_h264 + " -i " + target_file_watermark + " -filter_complex 'overlay=0:0' " + target_file_mp4;
-var shell_string_ffmpeg_palette = "ffmpeg -i " + target_file_h264 + " -vf 'fps=5,scale=400:-1:flags=lanczos,palettegen' -y " + target_file_palette;
+var shell_string_ffmpeg_palette = "ffmpeg -i " + target_file_mp4 + " -vf 'fps=5,scale=400:-1:flags=lanczos,palettegen' -y " + target_file_palette;
 
 
 function FfmpegHelper () {
@@ -76,7 +76,7 @@ FfmpegHelper.prototype.createGIF = function () {
     target_file_gif = datestring;
 
     // TODO: in variable packen!
-    var shell_string_ffmpeg_gif = "ffmpeg -i " + target_file_h264 + " -i " + target_file_palette + " -lavfi 'fps=15,scale=400:-1:flags=lanczos [x]; [x][1:v] paletteuse' -y " + target_folder_gif_path + target_file_gif;
+    var shell_string_ffmpeg_gif = "ffmpeg -i " + target_file_mp4 + " -i " + target_file_palette + " -lavfi 'fps=15,scale=400:-1:flags=lanczos [x]; [x][1:v] paletteuse' -y " + target_folder_gif_path + target_file_gif;
     //console.log("shell_string_ffmpeg_gif::::: " + shell_string_ffmpeg_gif);
 
     shell.exec(shell_string_ffmpeg_gif, function(code, output) {
