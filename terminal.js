@@ -25,6 +25,8 @@ var giffiles   = [];
 var captureIsBusy = false;
 var gifpath = "";
 
+
+
 // #######################
 // GPIO Helper and Events
 // #######################
